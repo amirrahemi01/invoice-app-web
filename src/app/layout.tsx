@@ -3,28 +3,16 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
+import { Analytics } from "@vercel/analytics/next"
+import { Toaster } from "@/components/ui/sonner"
 import "./globals.css"
-import Sidebar from "@/components/layout/sidebar"
-import Header from "@/components/layout/header"
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-})
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-})
+const _geist = Geist({ subsets: ["latin"] })
+const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Invoice Manager - Shop & Business Invoicing",
-  description: "Clean, minimal invoice management for shops and small businesses",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    userScalable: false,
-  },
+  title: "Belami Invoice - Simple Invoice Management",
+  description: "Clean and minimal invoice management for shops and small businesses",
 }
 
 export default function RootLayout({
@@ -33,15 +21,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}>
-        <div className="flex h-screen overflow-hidden">
-          <Sidebar />
-          <div className="flex flex-col flex-1">
-            <Header />
-            <main className="flex-1 overflow-auto">{children}</main>
-          </div>
-        </div>
+    <html lang="en">
+      <body className="font-sans antialiased">
+        {children}
+        <Toaster position="top-right" />
+        <Analytics />
       </body>
     </html>
   )
