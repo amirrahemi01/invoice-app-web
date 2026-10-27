@@ -1,11 +1,8 @@
-// Path: src/app/customers/new/page.tsx
-
+import type { Metadata } from "next"
 import { CustomerForm } from "@/components/customers/customer-form"
 
+export const metadata: Metadata = { title: "مشتری جدید" }
+
 export default function NewCustomerPage() {
-  return (
-    <div className="mx-auto max-w-2xl">
-      <CustomerForm />
-    </div>
-  )
+  return <CustomerForm />
 }

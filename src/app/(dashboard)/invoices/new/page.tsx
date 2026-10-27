@@ -1,9 +1,13 @@
-import { InvoiceForm } from "@/components/invoices/invoice-form"
+import type { Metadata } from "next"
+import { InvoiceEditor } from "@/components/invoices/invoice-editor"
 
-export default function NewInvoicePage() {
-  return (
-    <div className="mx-auto max-w-4xl">
-      <InvoiceForm />
-    </div>
-  )
+export const metadata: Metadata = { title: "فاکتور جدید" }
+
+export default async function NewInvoicePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ customer?: string; product?: string }>
+}) {
+  const { customer, product } = await searchParams
+  return <InvoiceEditor initialCustomerId={customer} initialProductId={product} />
 }

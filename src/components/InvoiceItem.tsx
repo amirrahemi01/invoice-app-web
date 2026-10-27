@@ -1,1 +1,0 @@
-// path: src/components/InvoiceItem.tsx

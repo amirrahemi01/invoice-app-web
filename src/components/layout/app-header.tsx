@@ -1,56 +1,27 @@
 "use client"
 
+import { Search } from "lucide-react"
 import { SidebarTrigger } from "@/components/ui/sidebar"
-import { Separator } from "@/components/ui/separator"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Search, Bell, Plus } from "lucide-react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { ThemeToggle } from "./theme-toggle"
+import { openCommandMenu } from "./command-menu"
+import { useT } from "@/lib/i18n"
 
 export function AppHeader() {
-  const pathname = usePathname()
-
-  const getPageTitle = () => {
-    if (pathname === "/dashboard") return "Dashboard"
-    if (pathname.startsWith("/invoices")) return "Invoices"
-    if (pathname.startsWith("/customers")) return "Customers"
-    if (pathname.startsWith("/products")) return "Products"
-    if (pathname === "/settings") return "Settings"
-    return "Dashboard"
-  }
-
-  const getNewButton = () => {
-    if (pathname === "/invoices") return { href: "/invoices/new", label: "New Invoice" }
-    if (pathname === "/customers") return { href: "/customers/new", label: "New Customer" }
-    if (pathname === "/products") return { href: "/products/new", label: "New Product" }
-    return null
-  }
-
-  const newButton = getNewButton()
-
+  const { t } = useT()
   return (
-    <header className="flex h-14 shrink-0 items-center gap-2 border-b bg-card px-4">
-      <SidebarTrigger className="-ml-1" />
-      <Separator orientation="vertical" className="mr-2 h-4" />
-      <h1 className="text-lg font-medium">{getPageTitle()}</h1>
-      <div className="ml-auto flex items-center gap-2">
-        <div className="relative hidden md:block">
-          <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input type="search" placeholder="Search..." className="w-64 bg-background pl-8" />
-        </div>
-        <Button variant="ghost" size="icon" className="h-8 w-8">
-          <Bell className="h-4 w-4" />
-          <span className="sr-only">Notifications</span>
-        </Button>
-        {newButton && (
-          <Button asChild size="sm">
-            <Link href={newButton.href}>
-              <Plus className="mr-1 h-4 w-4" />
-              {newButton.label}
-            </Link>
-          </Button>
-        )}
+    <header className="no-print sticky top-0 z-30 flex h-14 shrink-0 items-center gap-2 border-b bg-background/85 px-3 backdrop-blur supports-[backdrop-filter]:bg-background/70 sm:px-4">
+      <SidebarTrigger className="-ms-1" />
+      <button
+        type="button"
+        onClick={openCommandMenu}
+        className="flex h-9 min-w-0 flex-1 items-center gap-2 rounded-md border bg-card px-3 text-sm text-muted-foreground shadow-xs transition-colors hover:bg-accent sm:max-w-sm"
+      >
+        <Search className="size-4 shrink-0" />
+        <span className="truncate">{t("Search invoices, customers, products…")}</span>
+        <kbd dir="ltr" className="ms-auto hidden rounded border bg-muted px-1.5 font-mono text-[10px] sm:inline">⌘K</kbd>
+      </button>
+      <div className="ms-auto flex items-center gap-1">
+        <ThemeToggle />
       </div>
     </header>
   )

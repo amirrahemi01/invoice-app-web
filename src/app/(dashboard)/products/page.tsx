@@ -1,15 +1,8 @@
-import { Suspense } from "react"
-import { ProductsGrid } from "@/components/products/products-grid"
-import { ProductsFilters } from "@/components/products/products-filters"
-import { ProductsGridSkeleton } from "@/components/products/products-grid-skeleton"
+import type { Metadata } from "next"
+import { ProductsView } from "@/components/products/products-view"
+
+export const metadata: Metadata = { title: "کالاها و خدمات" }
 
 export default function ProductsPage() {
-  return (
-    <div className="space-y-4">
-      <ProductsFilters />
-      <Suspense fallback={<ProductsGridSkeleton />}>
-        <ProductsGrid />
-      </Suspense>
-    </div>
-  )
+  return <ProductsView page={1} />
 }

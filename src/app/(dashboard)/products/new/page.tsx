@@ -1,9 +1,8 @@
-import { ProductForm } from "@/components/products/products-form"
+import type { Metadata } from "next"
+import { ProductForm } from "@/components/products/product-form"
+
+export const metadata: Metadata = { title: "کالای جدید" }
 
 export default function NewProductPage() {
-  return (
-    <div className="mx-auto max-w-2xl">
-      <ProductForm />
-    </div>
-  )
+  return <ProductForm />
 }

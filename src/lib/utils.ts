@@ -1,53 +1,35 @@
-// path: src/lib/utils.ts
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
 
-export function cn(...classes: (string | undefined | null | boolean)[]): string {
-  return classes.filter(Boolean).join(" ")
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
 }
 
-export function formatCurrency(value: number): string {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(value)
+/** Short random id. Avoids crypto.randomUUID, which is missing on plain-http LAN origins. */
+export function uid(prefix = "") {
+  return prefix + Date.now().toString(36).slice(-4) + Math.random().toString(36).slice(2, 10)
 }
 
-export function formatDate(date: Date): string {
-  return new Intl.DateTimeFormat("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  }).format(date)
+export function sumBy<T>(items: T[], pick: (item: T) => number) {
+  return items.reduce((sum, item) => sum + pick(item), 0)
 }
 
-export const validationRules = {
-  customerName: {
-    required: "Customer name is required",
-    minLength: { value: 2, message: "Name must be at least 2 characters" },
-    maxLength: { value: 100, message: "Name must not exceed 100 characters" },
-  },
-  email: {
-    required: "Email is required",
-    pattern: {
-      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-      message: "Please enter a valid email address",
-    },
-  },
-  phone: {
-    pattern: {
-      value: /^[\d\s\-+$$$$]*$/,
-      message: "Please enter a valid phone number",
-    },
-  },
-  productName: {
-    required: "Product name is required",
-    minLength: { value: 2, message: "Name must be at least 2 characters" },
-  },
-  price: {
-    required: "Price is required",
-    min: { value: 0, message: "Price must be greater than 0" },
-  },
-  quantity: {
-    required: "Quantity is required",
-    min: { value: 1, message: "Quantity must be at least 1" },
-  },
+export function groupBy<T>(items: T[], key: (item: T) => string) {
+  const map = new Map<string, T[]>()
+  for (const item of items) {
+    const k = key(item)
+    const list = map.get(k)
+    if (list) list.push(item)
+    else map.set(k, [item])
+  }
+  return map
+}
+
+export function initials(name: string) {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join("")
 }

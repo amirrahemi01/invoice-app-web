@@ -1,24 +1,12 @@
-import { ProductForm } from "@/components/products/products-form"
+import type { Metadata } from "next"
+import { ProductEdit } from "@/components/products/product-edit"
+import { ProductsView } from "@/components/products/products-view"
 
-export default async function EditProductPage({
-  params,
-}: {
-  params: Promise<{ id: string }>
-}) {
+export const metadata: Metadata = { title: "کالاها و خدمات" }
+
+// /products/2 is page 2 of the list; /products/prd_001 edits a product.
+export default async function ProductRoute({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-
-  // Mock product data - in real app, fetch from database
-  const product = {
-    id,
-    name: "Web Design",
-    description: "Professional website design services",
-    price: 1500,
-    category: "Services",
-  }
-
-  return (
-    <div className="mx-auto max-w-2xl">
-      <ProductForm product={product} />
-    </div>
-  )
+  if (/^\d+$/.test(id)) return <ProductsView page={Number(id)} />
+  return <ProductEdit id={id} />
 }
